@@ -210,6 +210,17 @@ jobs:
     - run: test -d "${{ steps.test_multiple_repos.outputs.ros-workspace-directory-name }}/src/ament_lint"
     - run: test -d "${{ steps.test_multiple_repos.outputs.ros-workspace-directory-name }}/src/osrf_testing_tools_cpp"
 
+    # The second repo file contains a repository that also exists in the first.
+    # This is to test that it overlays correctly
+    - uses: ./
+      id: test_overlay_repos
+      name: "Test overlaying a repository from a second repos file"
+      with:
+        vcs-repo-file-url: |
+            .github/workflows/repo_file_for_test.repos
+            .github/workflows/repo_file_for_test_overlay_same_repo.repos
+        package-name: ament_copyright
+
     - uses: ./
       id: test_coverage
       name: "Test single package, with coverage enabled (Linux only)"
