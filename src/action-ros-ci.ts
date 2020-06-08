@@ -49,9 +49,12 @@ const curlFlagsArray = [
  * @returns                    URL to the repo file
  */
 function resolveVcsRepoFileUrl(vcsRepoFileUrl: string): string {
-	if (fs.existsSync(vcsRepoFileUrl)) {
-		return "file://" + path.resolve(vcsRepoFileUrl);
-	} else {
+	try {
+		if (fs.statSync(vcsRepoFileUrl).isFile()) {
+			return "file://" + path.resolve(vcsRepoFileUrl);
+		}
+		return vcsRepoFileUrl;
+	} catch (e) {
 		return vcsRepoFileUrl;
 	}
 }
