@@ -4831,15 +4831,11 @@ const curlFlagsArray = [
  * @returns                    URL to the repo file
  */
 function resolveVcsRepoFileUrl(vcsRepoFileUrl) {
-    try {
-        if (fs_1.default.statSync(vcsRepoFileUrl).isFile()) {
-            return "file://" + path.resolve(vcsRepoFileUrl);
-        }
-        return vcsRepoFileUrl;
+    var vcsRepoFilePath = path.resolve(vcsRepoFileUrl);
+    if (fs_1.default.existsSync(vcsRepoFilePath)) {
+        return "file://" + vcsRepoFilePath;
     }
-    catch (e) {
-        return vcsRepoFileUrl;
-    }
+    return vcsRepoFileUrl;
 }
 /**
  * Execute a command in bash and wrap the output in a log group.
